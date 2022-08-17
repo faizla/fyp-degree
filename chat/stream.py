@@ -5,11 +5,11 @@ from django.http import HttpResponse
 from django import template
 from django.template.loader import get_template
  
-consumer_key="XxBGGkJJpB87uwiy5iDghq7Vg"
-consumer_secret="mS8JiaxIhd44LNb1QWuYthcC6rNHVC5yc7V0zX18qpCcySPgY6"
+consumer_key=""
+consumer_secret=""
  
-access_token="248714285-mJiDC9ji7ttPX5fSYG8vPHHcjtJn1gTP5nyh6JqV"
-access_token_secret="9d0XEJ0ib4CZlWZ2wTWIKqPnmzHbcqqIDOelim65PFNDV"
+access_token=""
+access_token_secret=""
 
 class StdOutListener(ChatConsumer, StreamListener):
 
