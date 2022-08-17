@@ -74,10 +74,10 @@ WSGI_APPLICATION = 'justchat.wsgi.application'
 ASGI_APPLICATION = 'justchat.routing.application'
 
 TWEEPY_CREDS = {
-  'consumer_token': 'YENNw3iHxHq8IQsovWmtmmliV',
-  'consumer_secret': 'gYioxESc8UMNTay8JkiQAhuwQjs7oLZjLeg9rx2ofU0XKNs54F',
-  'access_token': '1199041951-99lHNaNFS1U1cVCbmAL4HRQIcvQ0NfmpL9tM1Kk',
-  'access_secret': 'n4TxMMK55WGqj5JhUSMhu9H93AKnaE9D7wCShgsK3Ih4q'
+  'consumer_token': '',
+  'consumer_secret': '',
+  'access_token': '',
+  'access_secret': ''
 }
 
 TWEEPY_AUTH = OAuthHandler(TWEEPY_CREDS.get('consumer_token'), TWEEPY_CREDS.get('consumer_secret'))
