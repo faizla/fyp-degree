@@ -106,10 +106,10 @@ REST_FRAMEWORK = {
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 TWEEPY_CREDS = {
-  'consumer_token': 'XxBGGkJJpB87uwiy5iDghq7Vg',
-  'consumer_secret': 'mS8JiaxIhd44LNb1QWuYthcC6rNHVC5yc7V0zX18qpCcySPgY6',
-  'access_token': '248714285-mJiDC9ji7ttPX5fSYG8vPHHcjtJn1gTP5nyh6JqV',
-  'access_secret': '9d0XEJ0ib4CZlWZ2wTWIKqPnmzHbcqqIDOelim65PFNDV'
+  'consumer_token': '',
+  'consumer_secret': '',
+  'access_token': '',
+  'access_secret': ''
 }
 
 TWEEPY_AUTH = OAuthHandler(TWEEPY_CREDS.get('consumer_token'), TWEEPY_CREDS.get('consumer_secret'))
