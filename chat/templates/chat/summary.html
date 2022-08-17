@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="description" content="">
+<title>Dashboard</title>
+{% load static %}
+<!-- Bootstrap Core CSS -->
+<link rel="stylesheet" type="text/css" href="{% static 'chat/summaryStatic/css/bootstrap.min.css' %}">
+<!-- jQuery UI CSS -->
+<link rel="stylesheet" type="text/css" href="{% static 'chat/summaryStatic/css/jquery-ui.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'chat/summaryStatic/css/jquery-ui.structure.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'chat/summaryStatic/css/jquery-ui.theme.min.css' %}">
+<!-- Custom CSS -->
+<link rel="stylesheet" type="text/css" href="{% static 'chat/summaryStatic/css/style.css' %}">
+
+<body>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <a class="navbar-brand" href="#"><img id="logo" src="{% static 'chat/summaryStatic/img/logo.png' %}"></a>      
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">Sentiment Analysis</div>
+                <div class="panel-body">
+                    <div id="left-charts" class="col-sm-12 col-md-8">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label>Dates: <span id="dateLabel1">01/01/2017</span> - <span id="dateLabel2">10/12/2017</span></label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">                 
+                               <div class="col-md-4">
+                                    <select id="var-select" class="form-control">
+                                        <option selected value="line">Line Chart</option>
+                                        <option value="stacked">Stacked Chart</option>
+                                    </select>
+                                </div>            
+                            </div>                                         
+                        </div>
+                        <div id="mention-line-chart"></div>
+                        <div id="mention-stacked-area"></div>
+                        <div id="line-chart"></div>
+                        <div id="stacked-area"></div>
+                        <div id="timeline"></div>
+                    </div>
+                    <div id="right-charts" class="col-md-4 col-sm-12 top-buffer">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-12" id="sentiment-donut"></div>
+                            <div class="col-sm-6 col-md-12" id="revenue"></div>
+                            <div class="col-sm-6 col-md-12 text-center">
+                                <h2 style="text-shadow: 2px 4px 3px rgba(0,0,0,0.3);" id="hashtag_keyword"></h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>  
+    <div class="container">
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">WordCloud</div>
+                <div class="panel-body">
+                    <div class="col-md-12 col-sm-12">
+                        <div id="wordcloud"></div>
+                        <div id="wordcloudsent"></div>
+                        <div class="text-center">
+                            <a id="sentimentworld" href=""><i class="fa fa-heart"></i> Show Sentiment</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="panel panel-default">  
+                <div class="panel-body">
+                    <div class="col-md-12 col-sm-8">
+                        <div class="col-md-2 col-sm-4">     
+                            <select id="var-select-tweet" class="form-control text-left">
+                                <option selected value="recent">Recent</option>
+                                <option value="popular">Popular</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 col-sm-4">
+                         <form id="forms" role="search">
+                                <input id="tweetSearch" name='tweet_search' type="text" class="form-control" placeholder="Search Tweets">  
+                          </form>        
+                        </div>
+                        <div class="col-md-4 col-sm-8">
+                            <div class="text-right" id="pagination-wrapper"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-sm-8">
+                <div class="tweetlist"></div>
+            </div>
+            <div class="col-md-4 col-sm-2">
+            <div class="row">
+                <div class="col-md-6 col-sm-4 text-center">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                                <p id="mentions"></p>
+                                <p>Mentions</p>
+                        </div>
+                    </div>       
+                </div>
+                 <div class="col-md-6 col-sm-4 text-center">
+                    <div class="panel panel-default">
+                        <div class="panel-body">      
+                            <p id="unique-contributor"></p>
+                            <p>Unique Contributor</p>
+                        </div>
+                    </div>      
+                </div>
+                </div>
+            <div class="row">
+                <div class="col-md-6 col-sm-4 text-center">
+                    <div class="panel panel-default">
+                        <div class="panel-body">      
+                            <p id="audience-reach"></p>
+                            <p>Audience Reach</p>
+                        </div>
+                    </div>       
+                </div>
+                 <div class="col-md-6 col-sm-4 text-center">
+                    <div class="panel panel-default">
+                        <div class="panel-body">      
+                            <p id="engagement"></p>
+                            <p>Engagement</p>
+                        </div>
+                    </div>      
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-sm-4 text-center">
+                    <div class="panel panel-default">
+                        <div class="panel-body">      
+                            <p id="positive"></p>
+                            <p>Positive</p>
+                        </div>
+                    </div>       
+                </div>
+                 <div class="col-md-6 col-sm-4 text-center">
+                    <div class="panel panel-default">
+                        <div class="panel-body">    
+                            <p id="negative"></p>
+                            <p>Negative</p>
+                        </div>
+                    </div>      
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+        
+        
+
+    
+
+
+
+<!-- External JS Libraries -->
+<script src="{% static 'chat/summaryStatic/js/jquery.min.js' %}"></script>
+<script src="{% static 'chat/summaryStatic/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'chat/summaryStatic/js/jquery-ui.min.js' %}"></script>
+<script src="{% static 'chat/summaryStatic/js/d3.min.js' %}"></script>
+<script src="{% static 'chat/summaryStatic/js/d3.layout.cloud.js' %}"></script>
+
+<!-- Custom JS -->
+<script src="{% static 'chat/summaryStatic/js/MentionLineChart.js' %}"></script>
+<script src="{% static 'chat/summaryStatic/js/MentionStackedChart.js' %}"></script>
+
+<script src="{% static 'chat/summaryStatic/js/linechartSummary.js' %}"></script>
+
+<script src="{% static 'chat/summaryStatic/js/stackedAreaChart.js' %}"></script>
+<script src="{% static 'chat/summaryStatic/js/barChart.js' %}"></script>
+<script src="{% static 'chat/summaryStatic/js/donutChart.js' %}"></script>
+<script src="{% static 'chat/summaryStatic/js/timeline.js' %}"></script>
+<script src="{% static 'chat/summaryStatic/js/wordcloud.js' %}"></script>
+<script src="{% static 'chat/summaryStatic/js/wordcloudsentiment.js' %}"></script>
+<script src="{% static 'chat/summaryStatic/js/tweet.js' %}"></script>
+
+<script>
+	hashtag = {{ room_name }};
+    $("#hashtag_keyword").text('#'+hashtag);
+
+	var link = 'http://127.0.0.1:8000/static/chat/summaryStatic/data/'+hashtag+'.json';
+	console.log(link);
+</script>
+
+<script src="{% static 'chat/summaryStatic/js/main.js' %}"></script>
+
+
+
+</body>
+</html>
+
+

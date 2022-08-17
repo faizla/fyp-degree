@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Event Feedback Visualization</title>
+    {% load static %}
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'chat/summaryStatic/css/bootstrap.min.css' %}">
+    <!-- jQuery UI CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'chat/summaryStatic/css/jquery-ui.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'chat/summaryStatic/css/jquery-ui.structure.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'chat/summaryStatic/css/jquery-ui.theme.min.css' %}">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'chat/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'chat/summaryStatic/css/style.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'chat/summaryStatic/css/bootstrap-4-utilities.min.css' %}">
+    <style type="text/css">
+        #snackbar {
+          visibility: hidden;
+          min-width: 250px;
+          margin-left: -125px;
+          background-color: #333;
+          color: #fff;
+          text-align: center;
+          border-radius: 2px;
+          padding: 16px;
+          position: fixed;
+          z-index: 1;
+          left: 50%;
+          bottom: 30px;
+          font-size: 17px;
+        }
+
+        #snackbar.show {
+          visibility: visible;
+          -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+          animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @-webkit-keyframes fadein {
+          from {bottom: 0; opacity: 0;} 
+          to {bottom: 30px; opacity: 1;}
+        }
+
+        @keyframes fadein {
+          from {bottom: 0; opacity: 0;}
+          to {bottom: 30px; opacity: 1;}
+        }
+
+        @-webkit-keyframes fadeout {
+          from {bottom: 30px; opacity: 1;} 
+          to {bottom: 0; opacity: 0;}
+        }
+
+        @keyframes fadeout {
+          from {bottom: 30px; opacity: 1;}
+          to {bottom: 0; opacity: 0;}
+        }
+    </style>
+
+
+    </head>
+<body>
+
+    <!-- <header class="indigo darken-1 section">
+        <h2>Event Feedback Analytic and Visualization Through Twitter Social Platform</h2>
+        <p class="flow-text grey-text center text-lighten-2"></p>
+        <a href="/chat/summary/{{ room_name }}/">Tekan</a>
+        <input id="room" name='roomName' type="text" size="100"/><br/>
+    </header> -->
+
+    <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+        <a class="navbar-brand" href="#">
+            <img src="{% static 'chat/summaryStatic/img/logo.png' %}" width="100" height="30" class="d-inline-block align-top" alt="">
+        </a>
+        <p class="flow-text grey-text center text-lighten-2"></p>
+
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Real Time Analysis <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="/chat/summary/{{ room_name }}">Summary Analysis</a>
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">#</span>
+              </div>
+              <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            </div>
+          <button class="btn btn-outline-success my-2 my-sm-0" id="room" name='roomName' type="submit">Search</button>
+        </form>
+      </div>
+    </nav> -->
+
+    <nav class="navbar navbar-default">
+        <div class="container">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#"><img id="logo" src="{% static 'chat/summaryStatic/img/logo.png' %}"></a>
+          </div>
+          <ul class="nav navbar-nav p-2">
+            <li class="active"><a href="/chat">Real Time Analysis</a></li>
+            <li id="linkDisabled" class="isDisabled"><a target="_blank" href="/chat/summary/{{ room_name }}">Summary Analysis</a></li>
+          </ul>
+          <form id="forms"class="navbar-form navbar-left float-right mt-3" role="search">
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon">#</span>
+                <input id="room" name='roomName' type="text" class="form-control" placeholder="Search Hashtag Keyword">
+              </div>
+            </div>
+          </form>     
+        </div>
+    </nav>
+<!--     <p class="flow-text grey-text center text-lighten-2"></p>
+ -->    <div class="container">
+        <div class="row">
+         <div id="left-charts" class="col-sm-12 col-md-12">
+
+            <div class="panel panel-default">
+                <div class="panel-heading">Map</div>
+                <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">                 
+                                <div id="map"></div>        
+                            </div>                                         
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div id="left-charts" class="col-md-8 col-sm-12">
+                <div class="panel panel-default">
+                <div class="panel-heading">Sentiment Line-Ticker</div>
+                    <div class="panel-body">  
+                        <div id="chart"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="right-charts" class="col-md-4 col-sm-12">
+                <div class="panel panel-default">
+                <div class="panel-heading">Sentiment Pie</div>
+                    <div class="panel-body">  
+                        <div class="canvas"></div>           
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-6">
+                <table class="tableSection " id="twitter">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Positive Tweets Live Feeds</th>
+                        </tr>
+                    </thead>
+                    <tbody class="tbody">
+                        {% for tweets in listTweets %}
+                        <tr>
+                            <td>
+                                <p class='thick'>{{ tweets.name }}</p>
+                                <p class='light'>@{{ tweets.screen_name }}</p>
+                                <p>{{ tweets.text }}</p>
+                                <p>{{ tweets.date }}</p>
+                                <p>{{ tweets.tweet_sentiment }}</p>
+                            </td>
+                        </tr>
+                        {% endfor %} 
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6 col-sm-6">
+                <table class="tableSection" id="twitter">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Negative Tweets Live Feeds</th>
+                        </tr>
+                    </thead>
+                    <tbody class="tbody1">
+                        {% for tweets in listTweets %}
+                        <tr>
+                            <td>
+                                <p class='thick'>{{ tweets.name }}</p>
+                                <p class='light'>@{{ tweets.screen_name }}</p>
+                                <p>{{ tweets.text }}</p>
+                                <p>{{ tweets.date }}</p>
+                                <p>{{ tweets.tweet_sentiment }}</p>
+                            </td>
+                        </tr>
+                        {% endfor %} 
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+        <div id="snackbar">Summary Analysis is now ready.</div>
+
+</body>
+
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/js/bootstrap.min.js" integrity="sha384-3qaqj0lc6sV/qpzrc1N5DC6i1VRn/HyX4qdPaiEFbn54VjQBEU341pvjz7Dv3n6P" crossorigin="anonymous"></script>
+
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<!-- import legend -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.min.js" ></script>
+<!-- import tooltip -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.9.1/d3-tip.js" ></script>
+<!-- import jquery -->
+<script src="{% static 'chat/jquery-3.4.1.min.js' %}"></script>
+<!-- import topojson to compress the map -->
+<script src="{% static 'chat/topojson.min.js' %}"></script>
+<!-- import user defined js to convert 24h to 12h -->
+<script src="{% static 'chat/dateFormat.js' %}"></script>
+<!-- ALL THE DATA VISUALIZATION -->
+<script src="{% static 'chat/realtimelinechart.js' %}"></script>
+<script src="{% static 'chat/piechart.js' %}"></script>
+<script src="{% static 'chat/map.js' %}"></script>
+
+<script>
+    // function to prevent default submit
+    var my_func = function(event) {
+        event.preventDefault();
+    };
+    // attach event listener with form
+    document.getElementById("forms").addEventListener("submit", my_func, true);
+
+    
+    var roomName = '';
+    document.querySelector('#room').focus();
+    document.querySelector('#room').onkeyup = function(e) {
+        if (e.keyCode === 13) {  // enter, return
+            
+            roomName = document.querySelector('#room').value;
+            console.log(roomName) 
+            window.location.pathname = '/chat/' + roomName + '/';
+
+        }
+    };  
+</script>
+
+<script>
+
+    fileExist = true;
+    //////FOR LINE CHART SENTIMENT
+    var counterPchart=0,counterNchart=0;
+    setInterval(function(){counterPchart=0;counterNchart=0;if (fileExist) checkIfFileLoaded();  }, 1001);
+    //////END LINE CHART SENTIMENT
+
+
+    //////FOR PIE CHART SENTIMENT
+    var counterP=0;
+    var counterN=0;
+    
+    const dataPie = [ 
+    {name: 'positive', cost: counterP},
+    {name: 'negative', cost: counterN},
+    ];
+
+    updatePie(dataPie);
+    //////END PIE CHART SENTIMENT
+    
+    
+
+
+    //////WEBSOCKET CONNECTION
+    //Hashtag name
+    var roomName = {{ room_name_json }};
+    var chatSocket = new WebSocket(
+        'ws://' + window.location.host +
+        '/ws/chat/' + roomName + '/');
+    //////END WEBSOCKET CONNECTION
+
+    //Initialize first <p> for tweetsCounter
+    const tweetCount = document.querySelector('p');
+    var tweetsCounter = 0;
+
+    //////WEBSOCKET LISTEN MESSAGE FROM SERVER
+    chatSocket.onmessage = function(e) {
+        var data = JSON.parse(e.data);
+        var message = data['message'];
+
+        var tr = document.createElement('tr');
+        tr.innerHTML =
+        '<td>'+
+        '<p class="thick">' + message.name + '</p>' +
+        '<p class="light">' +'@'+ message.screen_name + '</p>' +
+        '<p>' + message.text + '</p>' +
+        '</td>';
+        //count tweets
+        ++tweetsCounter;
+        //Count the sentiment in streaming query
+        if (message.tweet_sentiment == '1'){
+            ++counterPchart;
+            ++dataPie[0].cost;
+        }
+        else
+        {
+            ++counterNchart;
+            ++dataPie[1].cost;
+        }
+
+        //Call when location data is available
+        if (message.tweet_place){
+            console.log(message.tweet_place);
+            addGeoData(message.tweet_place)
+        }
+        // tweetCount.textContent = tweetsCounter;
+        //document.getElementsByClassName('tableSection')[0].getElementsByClassName('tbody')[0].appendChild(tr).appendChild(td);
+
+        //****This line To deal with auto scrolling bug
+        var ScrollFromBottom = $(document).height() - $(window).scrollTop();
+
+        //Push the tweets to top of the DOM element
+        if (message.tweet_sentiment == '1')
+        {
+            $(".tbody").prepend(tr);
+        }
+        else
+        {
+            $(".tbody1").prepend(tr);
+        }
+        
+
+        //****This line To deal with auto scrolling bug
+        $(window).scrollTop($(document).height() - ScrollFromBottom);  
+    };
+    //////END WEBSOCKET LISTEN MESSAGE SERVER
+
+    //////CLOSING WEBSOCKET CONNECTION
+    chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+    var message = roomName; 
+    chatSocket.onopen = () => chatSocket.send(JSON.stringify({
+        'message': message
+    }));
+    //////END CLOSING WEBSOCKET CONNECTION
+
+    var link = 'http://127.0.0.1:8000/static/chat/summaryStatic/data/'+roomName+'.json';
+    console.log(link)
+    // function checkIfFileLoaded(link) {
+    //     $.get(link, function(data, textStatus) {
+    //         if (textStatus == "success") {
+    //             // execute a success code
+    //             fileExist=false;
+    //             console.log("file loaded!");
+    //         }
+    //     });
+    // }
+    // function checkIfFileLoaded(){
+    //     $.ajax({
+    //         type: "HEAD",
+    //         async: true,
+    //         statusCode: {
+    //            404: function () {
+    //                 console.log('nope');
+    //                 }
+    //         },
+    //         success: function()
+    //         {
+    //             console.log("FILE ADE")
+    //             fileExist=false;
+    //         }
+    //     });
+    // }
+    function checkIfFileLoaded(){
+        $.get(link)
+            .done(function() { 
+                console.log("FILE ADE")
+                var x = document.getElementById("snackbar");
+                x.className = "show";
+                setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+                document.getElementById("linkDisabled").classList.remove('isDisabled');
+
+                fileExist=false;
+            }).fail(function() { 
+                console.log("FILE TADE")
+
+            })
+    }
+    
+</script>
+
+</html>
