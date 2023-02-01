@@ -18,3 +18,7 @@ Details of the project :
 Example of real time analysis on #LIVMUN (Liverpool vs Manchester United 2018 16/12/2018)
 
 <img width="1230" alt="Screen Shot 2020-01-20 at 2 26 33 AM" src="https://user-images.githubusercontent.com/55307820/216111512-16e328bb-9e3c-4559-b037-d9ba2bd94964.png">
+
+
+Example of historical analysis on #LIVMUN (Liverpool vs Manchester United 2018 16/12/2018)
+<img width="1230" alt="Screen Shot 2020-01-20 at 2 26 33 AM" src="">
